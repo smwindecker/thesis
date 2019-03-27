@@ -1,0 +1,262 @@
+\documentclass[titlesmallcaps,copyrightpage,examinerscopy]{uomthesis}
+%----------------------------------------------------------
+% OPTIONS
+% Options you can use in the documentclass above:
+%
+% phd/mres/hons = set the degree text [default=phd]
+% copyrightpage = print a copyright page on the back 
+%                 of the title page [default=false]
+% examinerscopy = print "Examiner's Copy" of title page and 
+%                 change linespacing to 1.5 [default=false]
+% titlesmallcaps = Use smallcaps for the title [default=false]
+%---------------------------------------------------------- 
+
+% this shows what labels you are using for cross references
+% \usepackage{showkeys} 
+%---------------------------------------------------------- 
+% STRUCTURE
+% this document is a skeleton which pulls in the meat of the thesis
+% from other files. Comment out and add lines as appropriate.
+%---------------------------------------------------------- 
+
+%remove title and space above bibliography - code has to live here...
+\makeatletter
+\renewenvironment{thebibliography}[1]
+     {\list{\@biblabel{\@arabic\c@enumiv}}
+           {\settowidth\labelwidth{\@biblabel{#1}}
+            \leftmargin\labelwidth
+            \setlength{\topsep}{0pt} 
+            \setlength{\partopsep}{0pt}
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}
+      \endlist}
+\makeatother
+
+% my packages
+\usepackage{pdflscape}
+\usepackage{adjustbox}
+\usepackage{afterpage}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{makecell,booktabs}
+% \usepackage[
+% bookmarksopen,
+% bookmarksdepth=2,
+% colorlinks=true,
+% urlcolor=blue]{hyperref}
+\usepackage{pdfpages}
+
+\usepackage{subcaption}
+\captionsetup{justification=raggedright, singlelinecheck=false}
+\usepackage[font=small,labelfont=bf,labelsep=space]{subcaption}
+
+\usepackage[inline]{enumitem} %for inline list
+\setlist*[enumerate,1]{%
+  label=(\roman*),
+}
+
+\begin{document}
+
+\frontmatter
+\title{Plant traits and carbon storage in freshwater wetlands}
+\author{Saras M. Windecker}
+\orcid{ORCID: 0000-0002-4870-8353} % <---- UoM now requires this on titlepage; if you don't have one just
+\department{BioSciences}           %       leave it blank
+
+\titlepage
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\chapter{Abstract}
+% \begin{localsize-main}{11}
+% \noindent\textit{In brief: Soil carbon dynamics in freshwater wetlands are increasingly important due to the role of these ecosystems in the global carbon cycle. My thesis broadly examines the role of vegetation communities in soil carbon storage across a range of scales. Landscape features such as duration of flooding combine with climatic conditions to affect the volume of litter produced in situ and in the surrounding landscape. I use carbon data collected at a state-wide scale to examine modelling approaches for landscape scale assessment of carbon stock. Diverse biota and flooding conditions make carbon storage highly variable at this scale, and therefore prediction extremely uncertain. At the wetland level, carbon storage is primarily driven by plant CO2 uptake during photosynthesis and subsequent litter decomposition. Decomposition rates vary greatly in litter, and so I examine allocation of carbon types in litter and relate it to decomposition in a range of species. My research will improve our understanding of plant contribution to soil carbon, from the scale of a leaf to the wider landscape, and aid in clarifying processes of plant decay in wetlands and carbon storage in general.}
+% \end{localsize-main}
+% 
+% \vspace{1.5cm}
+
+Soil carbon dynamics of freshwater wetlands are increasingly important due to their role of these ecosystems in the global carbon cycle. Despite covering less than 8\% of global land area, freshwater wetlands are globally significant reservoirs of soil carbon due to the long-term storage of carbon in the soil of these ecosystems. Soil carbon stocks are high because plant litter input and slow decay accumulate large quantities of organic carbon in wetland soil. Plant communities drive soil carbon capture, due to the volume and composition of litter they produce. My thesis broadly examines the influence of vegetation communities on soil carbon storage across a range of scales, from landscape-wide to leaf level. 
+
+In examining the relative contribution of vegetation to carbon stock on a landscape-wide scale, I used the carbon density of soil cores collected at 100 inland wetlands across Victoria to build a model to understand which factors drive soil carbon storage in wetlands. High variation in plant community composition and flooding conditions cause carbon storage to be highly variable, and therefore prediction extremely uncertain. Although there are many for inland wetlands to be carbon rich, the productivity of local vegetation alone is not sufficient for predicting carbon stock to new sites.
+
+At the wetland level, carbon storage is driven primarily by plant carbon dioxide uptake during photosynthesis and subsequent storage, minus some carbon loss from litter decomposition. Focusing on 29 wetland plant species, I measured seven traits of litter thought to be related to cell wall decomposition: four morphological and chemical traits associated with the plant economic spectrum (litter area per mass, dry matter content, nitrogen content, and carbon content) and three biomass carbon traits (hemicellulose, cellulose, and lignin content). I tested an analytic technique for estimating these three biomass carbon traits and developed an open-source statistical R package to replace proprietary software currently used in the modelling step of this estimation technique. In general, species invested predominantly in either lignin- or cellulose-based tissue, and this investment was not correlated with nutrient uptake strategies defined by the plant economics spectrum. This decoupling of the plant economic spectrum and biomass carbon traits investigated in our study suggests there are two independent aspects of litter recalcitrance. 
+
+I tested the relative importance of plant economic spectrum traits and biomass carbon traits for litter recalcitrance using a mesocosm experiment on 29 wetland plant species. I prepare a series of cross-validated, non-linear Bayesian models to test which of the measured traits affect rates of overall decay and how successful these models are at predicting the decomposition rate of new species. I found that trait models that include both litter nitrogen and carbon characteristics ranked among the best at predicting decomposition. However, differences among trait models are marginal, suggesting that there is no single `best' model for litter decomposition rate based on traits alone. A multi-trait approach is needed to understand litter recalcitrance, because carbon complexity is not approximated by traditionally measured traits but is important for predicting decay. My research improves our understanding of how plants contribute to soil carbon, from the scale of a leaf to the wider landscape, and clarifies how plants decay in wetlands and store carbon in wetland soils. 
+
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\chapter{Declaration}
+This is to certify that:
+{\renewcommand{\theenumi}{\roman{enumi}}%
+\begin{enumerate}
+ \item the thesis comprises only my original work towards the PhD except where indicated in the Preface,
+ \item due acknowledgement has been made in the text to all other material used,
+ \item the thesis is fewer than 100 000 words in length, exclusive of tables, maps, bibliographies and appendices.
+\end{enumerate}
+}
+\hrulefill \\
+
+\begin{flushright} 
+\includegraphics[scale=.5,trim={0 0 1.5cm 0},clip]{signature.png}
+
+Saras M. Windecker
+
+March, 2019
+\end{flushright}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\chapter{Preface}
+This thesis has been supported through various collaborations within the Quantitative and Applied Ecology Group (School of BioSciences, University of Melbourne), the Blue Carbon Lab (Centre for Integrative Ecology, Deakin Ecology), and external collaborators, detailed below. To facilitate journal publications throughout and subsequent to my PhD candidature, Chapters 2\textendash 5 are written as independent studies and therefore include detailed introductions and discussions in their own right. This will produce some unavoidable repetition in the chapters. I have written these chapters using the collective first-person plural ``we'', consistent with academic publishing practice. Appended to this thesis is a published paper associated with Chapter 2 led by Paul Carnell and a book chapter led by Jane Catford. Chapter contributions to the thesis and collaborator input were:
+
+\subsubsection*{Chapter 2}
+Windecker, S.M., Carnell, P.E., McColl-Gausden, E., Vesk, P.A., Catford, J.A., Macreadie, P.I. (in prep) Drivers of soil carbon storage in freshwater wetlands of south eastern Australia. 
+
+Contributions: SW, PC, \& PM conceived the ideas and designed methodology; SW and PC collected the data; SW \& EMG analysed the data; SW led the writing of the manuscript. All authors contributed critically to the drafts.
+
+\subsubsection*{Chapter 3}
+Windecker, S.M., Trevathan-Tackett, S.M., Golding, N., Catford, J.A., Macreadie, P.I., Vesk, P.A. (in prep) Decoupling plant economics traits and biomass carbon composition in wetland litter.
+
+Contributions: SW, PV, JC, PM, and STT conceived the ideas and designed methodology; SW collected the data; SW, PV, and NG analysed the data; SW led the writing of the manuscript. All authors contributed critically to the drafts.
+
+\subsubsection*{Chapter 4}
+Windecker, S.M., Vesk, P.A., Trevathan-Tackett, S.M., Golding, N. (in review) mixchar: An R package for the deconvolution of thermal decay curves.
+
+Contributions: SW, PV, and STT conceived the ideas and methodology; SW and NG created the package; SW led writing of the manuscript. All authors contributed critically to the drafts. 
+
+\subsubsection*{Chapter 5}
+Windecker, S.M., Golding, N., Catford, J.A., Sanchez, P., Camac, J.S., Vesk, P.A. (in prep) Understanding variation in litter decomposition in a multispecies mesocosm.
+
+Contributions: SW, PV, and JAC conceived the ideas and designed methodology; SW and PS collected the data; SW, PV, NG, and JSC analysed the data; SM led the writing of the manuscript. All authors contributed critically to the drafts.
+
+\subsubsection*{Support}
+My PhD candidature was generously supported by a University of Melbourne International Research Scholarship, a Melbourne International Fee Remission Scholarship, the Australian Research Council Centre of Excellence for Environmental Decisions, and the Holsworth Wildlife Reseach Endowment \& The Ecological Society of Australia. 
+
+The entirety of this thesis can be reproduced with the data and R code available on Github 
+https://github.com/smwindecker/thesis/. In order to aid in the reproducibility of this work, I wrote the code in a \textit{remake} framework \citep{remake}. This allows others to reproduce the data preparation, analysis, visualisation steps, in addition to the final pdf document by calling \texttt{remake()} in R. 
+
+\newpage
+\textbf{Publications}
+\begin{enumerate}
+  \item{Carnell PE, \textbf{Windecker SM}, Brenker M, Baldock J, Maque P, Brunt K, \& Macreadie PI. 2018. Carbon stocks, sequestration, and emission of wetlands in south eastern Australia. Global Change Biol. 2018;00:1–12.}
+  \item{Catford JA, Roberts J, Capon SJ, Froend RH, \textbf{Windecker SM}, \& Douglas MM. 2017. Wetland vegetation of inland Australia. \textit{Australian Vegetation} (ed. D.A. Keith), 3rd edition. Cambridge University Press, p. 490-515.}
+\end{enumerate}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\chapter{Acknowledgements}
+
+A lot of life happens during a PhD. Besides my academic support, what stands out to me is the incredible community of personal support I received from my supervisors, my labs, and my friends and family. 
+
+I would like to begin by thanking my PhD supervisors, Peter Vesk, Jane Catford, and Peter Macreadie, as well as my committee chair Mick McCarthy, for their guidance, patience, and overall contribution to my development as an academic. PV, you went above and beyond as my primary supervisor in supporting me during some very difficult periods. I admire you immensely and aspire to support a student in the same way you supported me. 
+
+To my wonderful mentors and friends at QAECO, I could not have done this without you. Casey, Esti, Hugh, and Michelle, you were the best room to join and I feel so lucky for your friendship and guidance those early days. Reid, Els, Tash, Simon, David, and Will, thank you for being my mentors and friends. Jian, Payal, Holly, and Carolyn, thank you for getting through it at the end.
+
+I was very lucky to be part of two fantastic labs during my candidature. Thank you to my colleagues and friends at the Blue Carbon Lab - Stacey, Paul, Carolyn for inspiring me, teaching me, and doing way too much fieldwork with me...
+
+Thank you Nick for believing in me, teaching me, giving me so many learning opportunities. I attribute many of the skills I'm most proud of gaining during my PhD to your mentorship. Thank you Jimmy Camac, for teaching me, getting excited about nerdy code with me, and inspiring me in my research.
+
+I would like to thank my fieldwork volunteers Abbey Kinnish, Kelsey Johnson, Francesca Dina, Madeline Brenker, and Urtzi Enriquez Urzelai, and especially Paula Sanchez who watched over my experiment when I had to leave the country during some ill-timed visa exile. 
+
+I received funding from a variety of sources that allowed me not only to conduct my fieldwork, lab analysis, and greenhouse experiment, but also to attend conferences, short courses, and lab visits. Thank you to the Australian Research Council Centre of Excellence for Environental Decisions, the Lifeworks Foundation via the University of Melbourne Botany Foundation, the School of Biosciences, and the Holsworth Wildlife Research Endowment. Thank you to Alain Zuur and Elena Ieno for your Bayesian statistics course and Richard McElreath for Statistical Rethinking - I learned so much from you. Thank you to Hans Cornelissen for hosting me for two months at the VU. 
+
+Thank you to Gregoire Freschet, Daniel Falster, and Will Wornwell for illuminating discussions about traits and decomposition. And to Nick Tierney, Miles McBain, and Mathew Ling for coding inspiration and companionship and for the opportunities to grow with organisations such as ROpenSci and the Melbourne Open Research Network. 
+
+Thank you to my adoptive family here in Melbourne, Francisca Fuenzalida and Walter Bishop, for supporting me at home this last year, and these final days (and for some wicked graphic design), and to my family back home in the US for supporting me from afar. 
+
+Finally, thank you to Australian government. My PhD candidature was generously supported by a University of Melbourne International Research Scholarship and by the Australian Research Council Centre of Excellence for Environmental Decisions. 
+
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\tableofcontents
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\listoffigures
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\listoftables
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\mainmatter
+
+\Sexpr{knitr::knit_child('chapters/Chapter1_Introduction.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Chapter2_carbon/Chapter2_carbon.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knit_child('chapters/Chapter3_traits/Chapter3_traits.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knit_child('chapters/Chapter4_mixchar/Chapter4_mixchar.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Chapter5_decomp/Chapter5_decomp.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Chapter6_Discussion.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+{
+\backmatter
+\chapter{References}
+%\newpage
+\bibliography{bibliography_decomposition_traits,bibliography_vic_carbon,bibliography_packages}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+}
+
+%---------------------------------------------------------- 
+% APPENDICES
+% include chapters as needed (will be numbered differently)
+%---------------------------------------------------------- 
+\let\svaddcontentsline\addcontentsline %supress tables and figures in index from showing
+\renewcommand\addcontentsline[3]{%     % up in lists in frontmatter
+  \ifthenelse{\equal{#1}{lof}}{}%
+  {\ifthenelse{\equal{#1}{lot}}{}{\svaddcontentsline{#1}{#2}{#3}}}}
+
+\clearpage
+\appendix
+\fancyhead[R]{\sc Appendix \thechapter}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+% \renewcommand{\thesection}{2.1.\arabic{section}}
+\Sexpr{knitr::knit_child('chapters/Appendix_ch2.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Appendix_ch3.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Appendix_ch4.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Appendix_ch5.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+\Sexpr{knitr::knit_child('chapters/Appendix_Pubs.Rnw')}
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%---------------------------------------------------------- 
+% BACK
+% list of symbols / references / index etc
+%---------------------------------------------------------- 
+%\backmatter
+%
+%\chapter{List of Symbols}
+%
+%
+%The following list is neither exhaustive nor exclusive, but may be helpful.
+%\begin{list}{}{%
+%\setlength{\labelwidth}{24mm}
+%\setlength{\leftmargin}{35mm}}
+%\item[$a$, $b$, $c$, $d$\dotfill] annihilation operators
+%\item[$a^\dagger$, $b^\dagger$, $c^\dagger$, $d^\dagger$\dotfill] creation
+%operators
+%\end{list}
+
+\end{document}
