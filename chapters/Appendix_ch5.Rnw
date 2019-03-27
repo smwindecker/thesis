@@ -1,0 +1,672 @@
+\chapter{Supplementary material for Chapter 5}\label{apx:ch5}
+\newpage
+
+\section{Supplementary figures and tables for Ch. 5}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.9}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/kb_plot.png}}
+	\caption{Posterior distributions and 95\% credible intervals for parameter estimates of species-level $\beta$ and $\kappa$ from the null hierarchical model. Species in descending order by median $\beta$ estimate. Sigma indicates the posterior draws for the hyperparameter of species-level standard deviation.}
+	\label{apx:kb_plot}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.6}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/kb_cor_plot.png}}
+	\caption{Correlation between $\beta$ and $\kappa$ parameter estimates per species (p\textless 0.5).}
+	\label{apx:kb_cor}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.6}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/ab_cor_plot.png}}
+	\caption{Correlation between $\alpha$ and $\beta$ parameter estimates per species (p\textgreater 0.5).}
+	\label{apx:ab_cor}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.9}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/mods_ar.png}}
+	\caption{Decomposition data and predictions by the negative exponential and Weibull residence time models for amphibious fluctuation-responder species (n = 5).}
+	\label{apx:mods_ar}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.9}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/mods_at.png}}
+	\caption{Decomposition data and predictions by the negative exponential and Weibull residence time models for amphibious fluctuation-tolerator species (n = 11).}
+	\label{apx:mods_at}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.9}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/mods_tda.png}}
+	\caption{Decomposition data and predictions by the negative exponential and Weibull residence time models for terrestrial damp species (n = 8).}
+	\label{apx:mods_tda}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.9}
+	{\includegraphics[width=\textwidth]{chapters/Chapter5_decomp/figs/mods_tdr.png}}
+	\caption{Decomposition data and predictions by the negative exponential and Weibull residence time models for terrestrial dry species (n = 5).}
+	\label{apx:mods_tdr}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+	\caption{Parameter estimates for $\kappa$, $\alpha$, and $\beta$ for all species. Presented with lower and upper 95\% confidence intervals of estimates in brackets.}
+		\label{apx:sp_params}
+			\begin{adjustbox}{width=\textwidth}
+			\begin{tabular}{l l l l r r r r r}
+			\toprule
+Family & Species & \thead{Functional\\ group} & \thead{Growth\\ form} & $\kappa$ & $\alpha$ & $\beta$ & $t_{50}$ & \thead{Mean residence\\ time} \\
+		\midrule
+\input{chapters/Chapter5_decomp/figs/species_parameters.tex}
+		\bottomrule
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[!ht] 
+  \centering
+	\caption{Deviance ranking of all Weibull models with trait fixed effects.}
+	\label{apx:deviance}
+	\begin{adjustbox}{width=.4\textwidth}
+	\begin{tabular}{l l r}
+	\toprule
+		Formula $\alpha$ & Formula $\beta$ & Median deviance \\
+		\midrule
+    \input{chapters/Chapter5_decomp/figs/deviance_median.tex}
+		\bottomrule
+	\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\section{Stan code}
+
+\subsection*{Stan code for negative exponential model with cross validation}
+
+\begin{lstlisting}
+functions {
+#include /functions/neg_exp_functions.stan
+#include /functions/param_functions.stan
+}
+
+data {
+  int<lower=1> N;                           // number of data points
+  int<lower=1> N_test;
+  vector[N] mT;                             // logged mass at time T
+  vector[N_test] mT_test;
+  vector[N] m0;                             // logged initial mass
+  vector[N_test] m0_test;
+  vector<lower=0>[N] time;                  // time
+  vector<lower=0>[N_test] time_test;
+  int<lower=1> P;                           // no fixefs
+  int<lower=1> J;                           // number of species
+  matrix[J, P] X;                           // design matrix for alpha effects
+  matrix[1, P] X_test;
+  int<lower=1, upper=J> sp[N];              // species id
+}
+
+parameters {
+  vector[P] b;
+  real<lower=0> sigma_obs;                  // observation sd
+}
+
+model {
+  vector[J] k;
+
+  // priors
+  sigma_obs ~ normal(0, 2);
+  b ~ normal(0, 2);
+
+  // likelihood
+  k = param(b, X, P, J);
+  mT ~ normal(m0 - k[sp] .* time, sigma_obs);
+}
+
+generated quantities {
+
+  real neg_loglik;
+  vector[N_test] mT_pred;
+
+  {
+  real k_pred;
+
+  k_pred = param_pred(b, X_test, P);
+  mT_pred = negexp_pred_rng(N_test, m0_test, time_test, k_pred, sigma_obs);
+  neg_loglik = negexp_negloglik(mT_test, m0_test, time_test, k_pred, sigma_obs, N_test);
+  }
+}
+\end{lstlisting}
+
+\subsection*{Stan model for negative exponential model with random effects by species}
+
+\begin{lstlisting}
+functions {
+#include /functions/neg_exp_functions.stan
+#include /functions/param_functions.stan
+}
+
+data {
+  int<lower=1> N;                           // number of data points
+  vector[N] mT;                             // logged mass at time T
+  vector[N] m0;                             // logged initial mass
+  vector<lower=0>[N] time;                  // time
+  int<lower=1> P;                           // no fixefs
+  int<lower=1> J;                           // number of species
+  matrix[J, P] X;                           // design matrix for alpha effects
+  int<lower=1, upper=J> sp[N];              // species id
+
+  int<lower=1> N_sim;                       // number of data points
+  vector[N_sim] m0_sim;
+  vector<lower=0>[N_sim] time_sim;          // time
+  int<lower=1, upper=J> sp_sim[N_sim];      // species id
+}
+
+parameters {
+  vector[P] b;
+  vector[J] a;                              // species intercepts on alpha
+  real<lower=0> sigma_obs;                  // observation sd
+  real<lower=0> sigma_sp;                   // species sp
+}
+
+model {
+  vector[J] k;
+
+  // priors
+  a ~ normal(0, sigma_sp);                  // species random effects on alpha
+  sigma_sp ~ normal(0, 2);
+  sigma_obs ~ normal(0, 2);
+  b ~ normal(0, 2);
+
+  // likelihood
+  k = param_re(b, X, P, J, a);
+  mT ~ normal(m0 - k[sp] .* time, sigma_obs);
+}
+
+generated quantities {
+
+  vector[N_sim] mT_sim;
+  vector[J] k_fit;
+
+  k_fit = param_re(b, X, P, J, a);
+  mT_sim = negexp_sim_rng(N_sim, m0_sim, time_sim, k_fit, sp_sim);
+
+}
+\end{lstlisting}
+
+\subsection*{Stan model for Weibull residence time model with cross validation}
+
+\begin{lstlisting}
+functions {
+#include /functions/weibull_functions.stan
+#include /functions/param_functions.stan
+}
+
+data {
+  int<lower=1> N;                           // number of data points
+  int<lower=1> N_test;
+  vector[N] mT;                             // logged mass at time T
+  vector[N_test] mT_test;
+  vector[N] m0;                             // logged initial mass
+  vector[N_test] m0_test;
+  vector<lower=0>[N] time;                  // time
+  vector<lower=0>[N_test] time_test;
+  int<lower=1> P_alpha;                     // num fixefs
+  int<lower=1> P_beta;                      // num fixefs
+  int<lower=1> J;                           // number of species
+  matrix[J, P_alpha] X_alpha;               // design matrix for alpha effects
+  matrix[1, P_alpha] X_alpha_test;          // design matrix for alpha effects
+  matrix[J, P_beta] X_beta;                 // design matrix for alpha effects
+  matrix[1, P_beta] X_beta_test;
+  int<lower=1, upper=J> sp[N];              // species id
+}
+
+parameters {
+  vector[P_alpha] b_alpha;
+  vector[P_beta] b_beta;
+  real<lower=0> sigma_obs;                  // observation sd
+}
+
+model {
+  vector[J] alpha;
+  vector[J] beta;
+  vector[N] mu;
+
+  // priors
+  sigma_obs ~ normal(0, 2);
+  b_alpha ~ normal(0, 2);
+  b_beta ~ normal(0, 2);
+
+  // likelihood
+  alpha = param(b_alpha, X_alpha, P_alpha, J);
+  beta = param(b_beta, X_beta, P_beta, J);
+  mu = weibull(N, m0, time, beta, alpha, sp, sigma_obs);
+  mT ~ normal(mu, sigma_obs);
+}
+
+generated quantities {
+
+  real neg_loglik;
+  vector[N_test] mT_pred;
+
+  {
+  real alpha_pred;
+  real beta_pred;
+
+  alpha_pred = param_pred(b_alpha, X_alpha_test, P_alpha);
+  beta_pred = param_pred(b_beta, X_beta_test, P_beta);
+  mT_pred = weibull_pred_rng(N_test, m0_test, time_test, beta_pred, alpha_pred, sigma_obs);
+  neg_loglik = weibull_negloglik(mT_test, m0_test, time_test, beta_pred, alpha_pred, sigma_obs, N_test);
+  }
+}
+\end{lstlisting}
+
+\subsection*{Stan model for Weibull residence time model with random effects by species}
+
+\begin{lstlisting}
+functions {
+#include /functions/weibull_functions.stan
+#include /functions/param_functions.stan
+}
+
+data {
+  int<lower=1> N;                           // number of data points
+  vector[N] mT;                             // logged mass at time T
+  vector[N] m0;                             // logged initial mass
+  vector<lower=0>[N] time;                  // time
+  int<lower=1> P_alpha;                     // no fixefs
+  int<lower=1> P_beta;                      // no fixefs
+  int<lower=1> J;                           // number of species
+  matrix[J, P_alpha] X_alpha;               // design matrix for alpha effects
+  matrix[J, P_beta] X_beta;                 // design matrix for alpha effects
+  int<lower=1, upper=J> sp[N];              // species id
+
+  int<lower=1> N_sim;                       // number of data points
+  vector[N_sim] m0_sim;
+  vector<lower=0>[N_sim] time_sim;          // time
+  int<lower=1, upper=J> sp_sim[N_sim];      // species id
+}
+
+parameters {
+  vector[P_alpha] b_alpha;
+  vector[P_beta] b_beta;
+  vector[J] a_sp_alpha;                     // species intercepts on alpha
+  vector[J] a_sp_beta;                      // species intercepts on beta
+  real<lower=0> sigma_obs;                  // observation sd
+  real<lower=0> sigma_sp_alpha;             // species sd
+  real<lower=0> sigma_sp_beta;
+}
+
+model {
+  vector[J] alpha;
+  vector[J] beta;
+  vector[N] mu;
+
+  // priors
+  a_sp_alpha ~ normal(0, sigma_sp_alpha);     // species random effects on alpha
+  a_sp_beta ~ normal(0, sigma_sp_beta);       // species random effects on beta
+  sigma_sp_alpha ~ normal(0, 2);
+  sigma_sp_beta ~ normal(0, 2);
+  sigma_obs ~ normal(0, 2);
+  b_alpha ~ normal(0, 2);
+  b_beta ~ normal(0, 2);
+
+  // likelihood
+  alpha = param_re(b_alpha, X_alpha, P_alpha, J, a_sp_alpha);
+  beta = param_re(b_beta, X_beta, P_beta, J, a_sp_beta);
+  mu = weibull(N, m0, time, beta, alpha, sp, sigma_obs);
+  mT ~ normal(mu, sigma_obs);
+}
+
+generated quantities {
+
+  vector[N_sim] mT_sim;
+  vector[J] alpha_fit;
+  vector[J] beta_fit;
+
+  alpha_fit = param_re(b_alpha, X_alpha, P_alpha, J, a_sp_alpha);
+  beta_fit = param_re(b_beta, X_beta, P_beta, J, a_sp_beta);
+  mT_sim = weibull_sim_rng(N_sim, m0_sim, time_sim, beta_fit, alpha_fit, sp_sim);
+
+}
+\end{lstlisting}
+
+\subsection*{Extra stan code}
+
+\begin{lstlisting}
+/**
+  * Create negative exponential fit for data
+  *
+  * @param N number of data
+  * @param m0 initial mass of data
+  * @param time time of data
+  * @param k_fit fit k
+  * @param sp species number
+  * @param sigma_obs datapoint error
+  * @return A vector of parameter estimates
+  */
+vector negexp_fit_rng(int N, vector m0, vector time, vector k_fit, int[] sp, real sigma_obs) {
+
+  vector[N] mT_fit;
+
+  for (i in 1:N) {
+    mT_fit[i] = normal_rng(m0[i] - (k_fit[sp[i]] * time[i]), sigma_obs);
+  }
+
+  return mT_fit;
+}
+
+/**
+  * Create negative exponential fit for simulated data
+  *
+  * @param N_sim number of simulated data
+  * @param m0_sim simulated m0
+  * @param time_sim simulated time data
+  * @param k_fit fit k
+  * @param sp_sim species number
+  * @return A vector of parameter estimates
+  */
+vector negexp_sim_rng(int N_sim, vector m0_sim, vector time_sim, vector k_fit, int[] sp_sim) {
+
+  vector[N_sim] mT_sim;
+
+  for (i in 1:N_sim) {
+    mT_sim[i] = m0_sim[i] - (k_fit[sp_sim[i]] * time_sim[i]);
+  }
+
+  return mT_sim;
+}
+
+/**
+  * Create negative exponential predictions for test datapoints
+  *
+  * @param N_test number of test data
+  * @param m0_test initial mass of test data
+  * @param time_test time of test data
+  * @param k_pred predicted k
+  * @param sigma_obs datapoint error
+  * @return A vector of parameter estimates
+  */
+vector negexp_pred_rng(int N_test, vector m0_test, vector time_test, real k_pred, real sigma_obs) {
+
+  vector[N_test] mT_pred;
+
+  for (i in 1:N_test) {
+    mT_pred[i] = normal_rng(m0_test[i] - (k_pred * time_test[i]), sigma_obs);
+  }
+
+  return mT_pred;
+}
+
+/**
+  * Calculate negative logliklihood for negative exponential
+  *
+  * @param mT_test true mass at time T of test data
+  * @param m0_test initial mass of test data
+  * @param time_test time of test data
+  * @param k_pred predicted k
+  * @param sigma_obs datapoint error
+  * @param N_test number of test data
+  * @return A vector of parameter estimates
+  */
+real negexp_negloglik(vector mT_test, vector m0_test, vector time_test, real k_pred, real sigma_obs, int N_test) {
+
+  vector[N_test] loglik;
+  real neg_loglik;
+
+  for (i in 1:N_test) {
+    loglik[i] = normal_lpdf(mT_test[i] | m0_test[i] - (k_pred * time_test[i]), sigma_obs);
+  }
+
+  neg_loglik = -1 * sum(loglik);
+  return neg_loglik;
+}
+
+/**
+  * Create weibull model for data
+  *
+  * @param N number of test data
+  * @param m0 initial mass of test data
+  * @param time time of test data
+  * @param beta predicted beta
+  * @param sp list of species numbers
+  * @param alpha predicted alpha
+  * @param sigma_obs datapoint error
+  * @return mu
+  */
+vector weibull(int N, vector m0, vector time, vector beta, vector alpha, int[] sp, real sigma_obs) {
+
+  vector[N] mu;
+
+  for (i in 1:N) {
+    mu[i] = m0[i] - (time[i] / beta[sp[i]])^alpha[sp[i]];
+  }
+
+  return mu;
+}
+
+/**
+  * Create weibull fit for data
+  *
+  * @param N number of data
+  * @param m0 initial mass of data
+  * @param time time of data
+  * @param beta_fit fit beta
+  * @param alpha_fit fit alpha
+  * @param sp species number
+  * @param sigma_obs datapoint error
+  * @return A vector of parameter estimates
+  */
+vector weibull_fit_rng(int N, vector m0, vector time, vector beta_fit, vector alpha_fit, int[] sp, real sigma_obs) {
+
+  vector[N] mT_fit;
+
+  for (i in 1:N) {
+    mT_fit[i] = normal_rng(m0[i] - (time[i] / beta_fit[sp[i]])^alpha_fit[sp[i]], sigma_obs);
+  }
+
+  return mT_fit;
+}
+
+/**
+  * Create weibull predictions for simulated data
+  *
+  * @param N_sim number of simulated data
+  * @param m0_sim simulated m0
+  * @param time_sim simulated time data
+  * @param beta_fit fit beta
+  * @param alpha_fit fit alpha
+  * @param sp_sim species number in simulated dataset
+  * @return A vector of parameter estimates
+  */
+vector weibull_sim_rng(int N_sim, vector m0_sim, vector time_sim, vector beta_fit, vector alpha_fit, int[] sp_sim) {
+
+  vector[N_sim] mT_sim;
+
+  for (i in 1:N_sim) {
+    mT_sim[i] = m0_sim[i] - (time_sim[i] / beta_fit[sp_sim[i]])^alpha_fit[sp_sim[i]];
+  }
+
+  return mT_sim;
+}
+
+/**
+  * Create weibull predictions for test datapoints
+  *
+  * @param N_test number of test data
+  * @param m0_test initial mass of test data
+  * @param time_test time of test data
+  * @param beta_pred predicted beta
+  * @param alpha_pred predicted alpha
+  * @param sigma_obs datapoint error
+  * @return A vector of parameter estimates
+  */
+vector weibull_pred_rng(int N_test, vector m0_test, vector time_test, real beta_pred, real alpha_pred, real sigma_obs) {
+
+  vector[N_test] mT_pred;
+
+  for (i in 1:N_test) {
+    mT_pred[i] = normal_rng(m0_test[i] - (time_test[i] / beta_pred)^alpha_pred, sigma_obs);
+  }
+
+  return mT_pred;
+}
+
+/**
+  * Calculate negative loglikelihood
+  *
+  * @param mT_test true mass at time T of test data
+  * @param m0_test initial mass of test data
+  * @param time_test time of test data
+  * @param beta_pred predicted beta
+  * @param alpha_pred predicted alpha
+  * @param sigma_obs datapoint error
+  * @param N_test number of test data
+  * @return A vector of parameter estimates
+  */
+real weibull_negloglik(vector mT_test, vector m0_test, vector time_test, real beta_pred, real alpha_pred, real sigma_obs, int N_test) {
+
+  vector[N_test] loglik;
+  real neg_loglik;
+
+  for (i in 1:N_test) {
+    loglik[i] = normal_lpdf(mT_test[i] | m0_test[i] - (time_test[i] / beta_pred)^alpha_pred, sigma_obs);
+  }
+
+  neg_loglik = -1 * sum(loglik);
+  return neg_loglik;
+}
+
+/**
+  * Create weibull predictions for simulated data - sim traits, single time
+  *
+  * @param N_sim number of simulated data
+  * @param m0_sim simulated m0
+  * @param time_sim simulated time data
+  * @param beta_fit fit beta
+  * @param alpha_fit fit alpha
+  * @param sp_sim species number in simulated dataset
+  * @return A vector of parameter estimates
+  */
+vector weibull_best_sim_rng(int N_sim, real m0_sim, real time_sim, vector beta_fit, vector alpha_fit, int[] sp_sim) {
+
+  vector[N_sim] mT_sim;
+
+  for (i in 1:N_sim) {
+    mT_sim[i] = m0_sim - (time_sim / beta_fit[sp_sim[i]])^alpha_fit[sp_sim[i]];
+  }
+
+  return mT_sim;
+}
+
+/**
+  * Create weibull predictions for simulated data - sim traits, across time
+  *
+  * @param N_sim number of simulated data
+  * @param m0_sim simulated m0
+  * @param time_sim simulated time data
+  * @param beta_fit fit beta
+  * @param alpha_fit fit alpha
+  * @param sp_sim species number in simulated dataset
+  * @return A vector of parameter estimates
+  */
+vector weibull_sim_traits_rng(int N_sim, real m0_sim, vector time_sim, vector beta_fit, vector alpha_fit, int[] sp_sim) {
+
+  vector[N_sim] mT_sim;
+
+  for (i in 1:N_sim) {
+    mT_sim[i] = m0_sim - (time_sim[i] / beta_fit[sp_sim[i]])^alpha_fit[sp_sim[i]];
+  }
+
+  return mT_sim;
+}
+
+/**
+  * Create likelihoods for parameter with random effects
+  *
+  * @param b effects vector of parameters
+  * @param X model matrix of effect values
+  * @param P number of effects
+  * @param J number of species
+  * @param a random effect
+  * @return A vector of parameter estimates
+  */
+  vector param_re(vector b, matrix X, int P, int J, vector a) {
+
+    vector[J] param_ln;
+    vector[J] param_vector;
+
+    for (j in 1:J) {
+
+      param_ln[j] = a[j];
+
+      for (p in 1:P) {
+        param_ln[j] = param_ln[j] + b[p] * X[j, p];
+      }
+
+      param_vector[j] = exp(param_ln[j]);
+    }
+
+    return param_vector;
+  }
+
+/**
+  * Create likelihoods for parameter without random effects
+  *
+  * @param b effects vector of parameters
+  * @param X model matrix of effect values
+  * @param P number of effects
+  * @param J number of species
+  * @return A vector of parameter estimates
+  */
+  vector param(vector b, matrix X, int P, int J) {
+
+    vector[J] param_ln;
+    vector[J] param_vector;
+
+    for (j in 1:J) {
+
+      param_ln[j] = 0;
+
+      for (p in 1:P) {
+        param_ln[j] = param_ln[j] + b[p] * X[j, p];
+      }
+
+      param_vector[j] = exp(param_ln[j]);
+    }
+
+    return param_vector;
+  }
+
+/**
+  * Create prediction for parameter
+  *
+  * @param b effects vector of parameters
+  * @param X model matrix of effect values
+  * @param P number of effects
+  * @return A vector of parameter estimates
+  */
+  real param_pred(vector b, matrix X, int P) {
+
+    real param_ln;
+    real param_value;
+
+    param_ln = 0;
+
+    for (p in 1:P) {
+      param_ln = param_ln + b[p] * X[1, p];
+    }
+
+    param_value = exp(param_ln);
+    return param_value;
+  }
+\end{lstlisting}

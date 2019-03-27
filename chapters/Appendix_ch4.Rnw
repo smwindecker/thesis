@@ -1,0 +1,185 @@
+\chapter{Supplementary material for Chapter 4}\label{apx:ch4}
+\newpage
+
+<<echo = FALSE>>=
+knitr::opts_chunk$set(size = 'footnotesize',
+                      fig.pos = 'H')
+@
+
+\section{Vignette: Workflow for thermal decay deconvolution with mixchar}
+
+The following is the contents of the instructional how-to vignette that accompanies the mixchar R package. It can be found at https://smwindecker.github.io/mixchar/articles/mixchar.html.
+
+\subsection*{1. Load data}
+
+The first step is to load the data derived from the thermogravimetric analysis into R. This step will vary depending on the format of your exported data. Two of many options for reading data in R are \verb|read.csv()| for .csv files and \verb|read.table()| for .txt files. Both of these functions also have a \verb|skip| argument, in which you can tell R to begin reading data from a certain line, useful if the exported data has several lines of metadata at the top. You may also then have to assign column names. For example:
+
+<<eval = FALSE, size = 'footnotesize'>>=
+my_data <- read.csv('your_file_path_here.csv', header = FALSE, skip = 15)
+colnames(c('temperature_C', 'mass_mg'))
+@
+
+More information about reading data into R can be found at http://www.sthda.com/english/wiki/reading-data-from-txt-csv-files-r-base-functions. 
+
+This package was developed using data from a Netzsch TGA-FTIR thermogravimetric analyser. We have included two example datasets in this package, called \verb|juncus| and \verb|marsilea|, that we will use for this demonstration. The \verb|juncus| dataset contains theromogravimetric data for a sample of the freshwater reed, \textit{Juncus amabilis}, and \verb|marsilea| contains data for the freshwater fern, \textit{Marsilea drumondii}. 
+
+<<>>=
+library(mixchar)
+head(juncus)
+@
+
+\subsection*{2. Process data}
+
+After we've loaded our data, can use the function \verb|process()| to take the derivative of this data, resulting in rate of mass loss over temperature data. This produces the multi-peaked rate of decay curve that we will apply the mixture model to. The \verb|process| function needs the dataset, the initial mass of sample, the name of the temperature data column, and the name of your mass column (mg). Mass might be recorded in your exported dataset in different ways:
+
+\begin{itemize}
+  \item{If you have \textbf{mass loss of sample}, such as in the \verb|juncus| dataset, you can specify the column name using the \verb|mass_loss| argument.}
+  \item{If you have \textbf{mass remaining of sample}, you specify the column name using the \verb|mass| argument.}
+  \item{\textbf{You only need to specify one of these columns} for the \verb|process| function. But make sure the argument matches the kind of data!}
+\end{itemize}
+
+The function defaults to temperature data in Celsius, but you can also modify to indicate the data is provided in Kelvin, by specifying the argument \verb|temp_units = 'K'|. 
+
+<<>>=
+deriv_juncus <- process(juncus,                   # dataframe name
+                        init_mass = 18.96,
+                        temp = 'temp_C',          # column name for temperature
+                        mass_loss = 'mass_loss')  # column name for mass loss data
+deriv_juncus
+@
+
+<<>>=
+deriv_marsilea <- process(marsilea, 
+                          init_mass = 15.29,
+                          temp = 'temp_C', 
+                          mass_loss = 'mass_loss')
+deriv_marsilea
+@
+
+\subsection*{3. Plot mass loss and rate of mass loss curves}
+
+At this point we can take a look at what we've done so far using the default plotting option for the processed data. If you \verb|plot()| the output of the \verb|process| function, you will get two curves: the mass of sample across time and the rate of mass loss curve. If you're only interested in one plot, you can specify \verb|plot_type = 'mass'| or \verb|plot_type = 'rate'|. You can also specify a size factor using \verb|cex|. 
+
+The rate of mass loss curve helps us to visualise the three stages of mass loss: 
+\begin{enumerate}
+  \item{A short period of dehydration, up until approximately 120 $^{\circ}$C.}
+  \item{A wide mid-range of high mass loss, caused by devolatilisation of primary biomass carbon components, between approximately 120\textendash650 $^{\circ}$C.}
+  \item{A final period of little mass loss when carbonaceous material associated with the inorganic fraction decomposes, after approximately 650 $^{\circ}$C.}
+\end{enumerate}
+In the next step we will crop the data to include only phase 2, so visualising your own data is important to check that the default temperature bounds will be suitable, in case for example the dehydration phase extends past 120 $^{\circ}$C or ends earlier. Comparing the plots for the two species we can see similarities in the shape and location of the peaks of the overall rate of mass loss curve, but also subtle differences. It is these characteristics we will tease apart using the nonlinear mixture model in the next step. 
+
+<<fig.height = 3.7>>=
+plot(deriv_juncus, cex = 0.8)
+@
+
+<<fig.height = 3.7>>=
+plot(deriv_marsilea, cex = 0.8)
+@
+
+\subsection*{4. Deconvolve data}
+
+The \verb|decovolve| function takes care of modelling the rate of mass loss data with the nonlinear mixture model. To do so it first crops to the second phase, as mentioned above, to default temperature bounds of 120 $^{\circ}$C and 700 $^{\circ}$C. These can be modified with the \verb|lower_temp| and \verb|upper_temp| arguments. Although most biomass samples have only three main components (corresponding to hemicellulose, cellulose, and lignin), some have a second hemicellulose peak in the low temperature range. \verb|deconvolve| will decide whether three or four peaks are best using an internal function that determines if there is a peak below 220 $^{\circ}$C. Upon inspection of your curve you can override this by modifying the \verb|n_peaks| argument. The function also has built in starting values for the nonlinear optimisation. These values were tested on litter from 30 plant species, encompassing herbaceous, graminoid, as well as woody species. However, if they do not work for your sample, or you would like to play with the effect of changing them, you can do so with the \verb|start_vec|, \verb|lower_vec|, and \verb|upper_vec| arguments. 
+
+<<>>=
+output_juncus <- deconvolve(deriv_juncus)
+output_juncus
+@
+
+<<>>=
+# here's an example of specifying your starting vector. 
+# the order of values is height, skew, position, then width
+
+my_starting_vec <- c(height_0 = 0.002, skew_0 = -0.15, 
+                     position_0 = 210, width_0 = 50,
+                     height_1 = 0.003, skew_1 = -0.15, 
+                     position_1 = 250, width_1 = 50,
+                     height_2 = 0.006, skew_2 = -0.15, 
+                     position_2 = 320, width_2 = 30,
+                     height_3 = 0.001, skew_3 = -0.15, 
+                     position_3 = 390, width_3 = 200)
+
+output_marsilea <- deconvolve(deriv_marsilea, 
+                              n_peaks = 4, 
+                              start_vec = my_starting_vec)
+
+output_marsilea
+@
+
+\subsection*{5. Examine outputs}
+\verb|deconvolve| results in a few different outputs that you can retrieve with accessor functions.
+
+\begin{itemize}
+  \item{\verb|rate_data()| will show you the processed dataset that results from the \verb|process| function, useful if you want to play around with other modelling approaches or plotting options: 
+<<>>=
+juncus_rate <- rate_data(output_juncus)
+head(juncus_rate)
+@
+  }
+
+  \item{\verb|temp_bounds()| will print the temperature values at which the data were cropped for analysis:
+<<>>=
+temp_bounds(output_juncus)
+@
+  } 
+  
+  \item{\verb|model_fit()| will show you the output of the mixture model and estimated parameter values for height, skew, position, and width for each peak. Peak 1 is hemicellulose, peak 2 is cellulose, and peak 3 is lignin. If present, the optional fourth peak located at the lowest temperature interval will be listed as peak 0:
+<<eval = FALSE>>=
+model_fit(output_juncus)
+@
+
+<<echo = FALSE>>=
+cat(paste0('Nonlinear regression model\n',
+          '  model: deriv ~ fs_mixture(temp_C, height_1, skew_1, position_1,\n',
+          '    width_1, height_2, skew_2, position_2, width_2, height_3,\n',
+          '    skew_3, position_3, width_3)\n',
+          '  data: dataframe\n',
+          '  height_1   skew_1     position_1 width_1    height_2   skew_2\n',
+          '  3.944e-03  1.258e-01  2.662e+02  5.106e+01  5.793e-03  1.344e-02\n',
+          '  position_2 width_2    height_3   skew_3     position_3 width_3\n',
+          '  3.173e+02  2.866e+01  1.163e-03  1.085e-01  3.300e+02  2.500e+02\n',
+          '  residual sum-of-squares: 9.299e-06\n\n',
+          'Number of iterations to convergence: 23\n',
+          'Achieved convergence tolerance: 1.49e-08'))
+@
+  }
+  
+  \item{\verb|component_weights()| will display the mean, 2.5\% and 97.5\% estimates, median, and standard deviation of the weight of each component:
+<<>>=
+component_weights(output_juncus)
+@
+
+<<>>=
+component_weights(output_marsilea)
+@
+  }
+
+\end{itemize}
+
+\subsection*{6. Plot deconvolved curves}
+
+The default plotting function for the output of the \verb|deconvolve| function shows you your raw mass data, the estimated full curve from the mixture model, and also plots the individual component peaks using their parameter estimates from the model. The default plot is in black and white, but you can plot a colour version that uses colour-blind friendly viridis colours by specifying \verb|bw = FALSE|.
+
+Take a look at your plot. Do the estimates seem reasonable? 
+
+<<out.width = '50%'>>=
+plot(output_juncus, bw = FALSE)
+@
+
+<<out.width = '50%'>>=
+plot(output_marsilea, bw = FALSE)
+@
+
+If the estimated peaks do not match your data well, it may be that your sample is a bit different than those used to develop the package. That's not a problem, but you may need to try the deconvolution again with different starting values. If you aren't managing to produce reasonable estimates, get in touch with us via the issues page at 
+http://www.github.com/smwindecker/mixchar/issues.
+
+If you want to modify the aesthetics of this plot for your own work, then you can access the parameter estimates as follows: 
+
+<<>>=
+juncus_parameters <- model_parameters(output_juncus)
+@
+
+and use \verb|fs_function()| to plot individual component peaks, and \verb|fs_mixture| function to plot the overall mixture curve. 
+
+\subsection*{More information}
+To read more about the methodology, check out the Detailed Methodology article at 
+http://smwindecker.github.io/mixchar/articles/Background.html. 

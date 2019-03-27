@@ -1,0 +1,61 @@
+\chapter{General Discussion}\label{sec:conc}
+\newpage
+
+\section{Overview}
+
+In this thesis I examined the role of vegetation communities in soil carbon storage across several scales. My aims were: (i) to determine the relative role of vegetation communities compared to other drivers of carbon stock at the landscape scale; (ii) to explore innovative ways to measure and quantify covariation between functional traits related to litter quality; and (iii) to empirically test the contribution of these traits to litter decomposition. 
+
+To achieve these aims I developed novel statistical models that predict soil carbon stock in freshwater wetlands and predict decomposition rate in plant species using functional traits. I parameterised these models with data collected from a state-wide field sampling protocol and a mesocosm experiment. The models greatly advance current statistical tools because (i) they are hierarchical, and therefore allow us to partition variance between sites/species and variables of interest, and because (ii) they use cross-validation for model selection, giving us insight into prediction. 
+
+This chapter synthesizes my findings and discusses their significance and implications for understanding how plants contribute to wetland soil carbon stock. I also place the statistical approaches used in this thesis into a broader context and provide details about future work. 
+
+\section{Key insights}
+
+Carbon storage in wetlands is driven by a wide range of interacting factors. I found that carbon was highest among wetlands with intermediate levels of precipitation but in areas with infrequent permanent water cover. I also found that sites with both low and high productivity, as approximated by NDVI, had higher carbon. Possibly, these results indicate that there are a few distinct plant communities, on both extremes of the NDVI spectrum, that exist in wetlands with high carbon stock \citep{whitaker2015,wang2016,marin-muniz2014,ceballos2013}.
+
+Deposition of plant litter directly contributes to soil carbon stock. My results are consistent with others, who found that litter of different quality decomposes at different rates \citep{berg2014,enriquez1993,hobbie2008}. I found that the relative contribution of biomass carbon and nutrient level of tissue combined to form the most predictive trait-based models of decomposition rate. Species can therefore decay faster either by having tissue higher in nitrogen or higher in relatively more labile forms of carbon. Other empirical decay research supports this conclusion \citep{britson2016,cornelissen2001,cornwell2008,cornwell2014,freschet2012,jackson2013}. My work is distinct from these previous studies because I show that these traits affect decomposition rate even when the average rate of decay is decreasing over time (Weibull residence time model $\alpha$ parameter \textless 1). This is significant because I integrate trait-based hypotheses into a multi-parameter model that captures biological mechanisms of decay. 
+
+\section{Future directions for integrated assessment of plant effects on soil carbon}
+
+My research has added to our body of knowledge about landscape- and wetland-scale influence of plant communities on soil carbon stock. However, my work still relies upon drawing indirect conclusions about how species-level recalcitrance and relative rates of decomposition affect carbon stock. I do not directly examine how species-level trait composition drives soil carbon. To address this concern I had initially planned to use species-level trait information in the wider carbon stock model (as described in Appendix~\ref{apx:ch2}). This was beyond the scope of this thesis at the time, but is a useful direction if we hope to use community-weighted mean values of traits that affect decomposition rate to infer about carbon stock \citep{garnier2004}. 
+
+\section{Methodological and statistical insights and future work}
+
+Complementary to the main aims of my thesis, I came to some important insights about a handful of methodological approaches. In this section I discuss some of these insights, their implication for carbon modelling and trait-based research, and future directions. 
+
+\subsection{Hierarchical modelling approaches}
+
+Hierarchical modelling of carbon density at depth marks an important methodological advancement for accurately estimating carbon stock. Global carbon stock comparison requires that we report stock to a consistent depth, which often requires extrapolation \citep{conti2013,hiraishi2014}. My results confirm that it may be inaccurate to assign carbon density measured from shallower depths to deeper samples \citep{nahlik2016}. The hierarchical approach presented in this thesis gives the model more information to extrapolate the depth profile for individual cores. The model can use variation in other cores from the same site and from the overall average, to more confidently fit a profile. This is especially important when there are few samples. In the future, researchers could build on this hierarchical framework to ask what environmental variables predict the depth profile \citep{adame2015,villa2015}, which has the potential to dramatically improve the accuracy of extrapolating carbon stock at depth. 
+
+By adding hierarchical effects to trait-based models of decomposition rate, I could partition inter- and intra-specific variance \citep{thomas2019,catford2014a}. The substantial species-level variance that the `best' trait model cannot explain identifies remaining gaps in our understanding of decomposition \citep{camac2018}. Even though this model supports other work in concluding that traits inform decomposition rate and help predict decomposition rate in new species \citep{cornwell2008}, it also raises questions about the remaining unexplained variance that could be examined in future work.
+
+\subsection{Thermogravimetry for biomass carbon trait estimation}
+
+Despite the fact that lignin is fairly resistant to chemical and biological degradation, it is not easy to accurately measure \citep{hatfield2005}. All measurement methods must be considered estimations because they have their own sources of error and estimate some samples better than others \citep{dence1992}. Compared to acid hydrolysis techniques, thermogravimetry relies on analytical pyrolysis, which avoids the need to first isolate lignin with chemical degradation \citep{dence1992}. Lignin in woody species can be reliably isolated, but proteins and cutins affect the precision of this approach for estimating lignin in herbaceous species. Given there is no single perfect estimation technique, experts have concluded that the most important consideration is consistency among samples being analysed. Given my interest in multi-species comparison including not only woody species but graminoid and herbaceous species as well, thermogravimetric analysis was a reasonable choice \citep{orfao2001}. Considering the opportunities for rapid inter-species biomass carbon comparisons, I recommend further investigation of how we can use thermogravimetric analysis to compare to other plant structures, such as roots \citep{bardgett2014,valverde-barrantes2015}. 
+
+Use of thermogravimetry for biomass carbon estimation relies upon a second step to deconstruct a continuous multivariate curve with a mixture model. These models are notoriously difficult to fit, because many combinations of underlying curves can create the same overall curve \citep{mclachlan1988}. Integration under these constituent curves is the foundation for the weight estimates of the biomass carbon components. Therefore, mixture model flexibility demands careful selection of biologically reasonable starting values \citep{peel2000}. Parameterisation of the mixture model implemented in \texttt{mixchar}, the R package we developed for this purpose, is not only based on a strong understanding of the relevant literature, but also completely transparent. Users can modify and report the starting values and other modelling choices used to prepare their component estimates. \texttt{mixchar} has already been tested for biomass carbon estimation in other multi-species comparisons (Trevathan-Tackett et al., unpublished).
+
+More generally, writing \texttt{mixchar} encouraged me to consider how we can make all aspects of our scientific workflow more reproducible. Although many R packages exist to encourage computational reproducibility of data analysis, resources for computationally reproducible data measurement and collection steps are more rare (Fig.~\ref{Fig:open_science}). In order to integrate open science principles into our entire workflow, it is my hope that resources like \texttt{mixchar} become more common.
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.8}
+	{\includegraphics[width=\textwidth]{chapters/Chapter6_Disc_diagram.jpeg}}
+	\caption{Steps for integrated open science.}
+	\label{Fig:open_science}
+\end{figure}
+
+\subsection{Weibull model}
+
+I found that the Weibull residence time model predicted new species better than the negative exponential model because it allowed the rate of decay to change over time. Although multi-parameter models for decomposition are already widely discussed in the decomposition literature \citep{bruun2004,feng2009,manzoni2012}, they are rarely used to test hypotheses regarding trait effects on multiple decay parameters. Markov chain Monte Carlo (MCMC) sampling made it tractable for me to fit a model with trait effects on multiple parameters \citep{hastings1970}. Future decomposition research could make use of Bayesian methods to integrate biologically sensible multi-parameter decomposition models with trait hypotheses. 
+
+\subsection{Prediction methods and implication}
+
+In both the state-wide carbon stock model and the decomposition rate model I used cross-validation to evaluate out-of-sample prediction \citep{gelman2006}. This approach to model evaluation and selection improves upon information criteria approaches because it tells us not only how well a model explains observed data, but how useful that model is for predicting in a global context \citep{falster2018,macnally2018}. Although inference models can both guide and test ecological theory, we are often interested in using models to learn about areas that we have not sampled. In the context of global carbon storage, assessing our ability to predict to new sites is especially important. Around 64\% of the world's wetlands have been lost or degraded in the last century \citep{davidson2014}. As significant reservoirs for global soil carbon storage \citep{bridgham2006}, protection of remaining resources is especially important. Targetted conservation demands accurate prediction of soil carbon storage potential among candidate wetlands \citep{cartus2014}. 
+
+\section{Conclusion}
+
+This thesis quantified recalcitrance in wetland plant species, tested the impact of these measures of recalcitrance on decomposition rate of litter, and related overall vegetation productivity to landscape-scale carbon stock using innovative analytic and statistical methods. I found that carbon storage in wetlands is driven by a wide range of factors, and that neither productivity nor inundation alone could explain all the variation in wetland carbon stock among sites. I established that nutrient traits are decoupled from carbon components. Both of these trait types contributed to litter relative recalcitrance because both predicted decomposition rate. Bayesian, hierarchical modelling both made it possible to test these relationships in multi-parameter models, and revealed unexplained variance. Future work should attempt to integrate these models and explain remaining variation. 
+
+
+

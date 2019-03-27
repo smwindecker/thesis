@@ -1,0 +1,111 @@
+\chapter{General Introduction}\label{sec:intro}
+\newpage
+
+\section{Overview: soil carbon in wetlands}
+
+Wetlands are some of the most productive ecosystems on the planet providing valuable ecosystem services such as water filtration, flood mitigation, and carbon sequestration. Best estimates suggest that wetlands account for more than 30\% of soil carbon storage \citep{bridgham2006}, despite covering less than 5\% of the earth's surface \citep{davidson2014,mitsch2007}. Wetland systems play an important role in soil carbon sequestration because they are highly productive ecosystems and experience low rates of decay. Tidal ecosystems accumulate more carbon per unit area than freshwater wetlands \citep{chmura2003,ewerslewis2018,macreadie2017} due to saline conditions that inhibit decomposition rates. Despite their slower rates of accumulating carbon in soil, freshwater wetlands should not be ignored because they are estimated to hold as much as ten times more carbon than tidal wetlands \citep{nahlik2016} due to their comparatively wider extent. 
+
+In this thesis I explore the role of plant communities in storing carbon in freshwater wetlands. Plants affect soil carbon primarily through their litter, by depositing organic carbon acquired in photosynthesis \citep{dedeyn2008}. Long-term storage of litter-derived carbon in wetlands depends on the rate and extent to which it is decomposed \citep{dedeyn2008,prentice2001}. I examine the contribution of vegetation at a range of scales, from landscape-wide to leaf tissue.
+
+In the following sections of this chapter I summarise our current understanding of how wetlands store carbon and the role of plant communities in general. I briefly review traits associated with litter quality that are used to generalise how plants contribute to carbon stored in soil. Following this, I explore approaches that researchers have used to estimate these traits and how they affect decomposition rates. I then present the aims and outline of my thesis.
+
+\section{How do wetlands store carbon?}
+
+Carbon storage rates in freshwater wetlands vary among and within wetlands \citep{pearse2018} due to high variation in biota and inundation conditions found across sites \citep{mitra2005,mcleod2011}. Wet areas in the landscape are often highly productive, adding significant biomass to the system in the form of litter. In addition to high productivity of locally-derived (`autochthonous') carbon, externally-derived dissolved and particulate organic matter (`allochthonous' carbon) flows into the wetland from the surrounding water catchment area \citep{mitsch2007}. Wetlands exist geomorphically in low parts of the landscape and therefore are hydrologically connected with their surroundings, receiving inflows of water from rainfall or riverbank flooding \citep{mitsch2007}. This can lead to high levels of inundation which promotes conditions leading to low rates of decomposition. Despite the importance of inundation regime and geomorphology, research suggests that these environmental predictors may act on carbon storage primarily through their effects on plant communities \citep{manning2015}. 
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.9}
+	{\includegraphics[width=\textwidth]{chapters/Chapter1_Intro_fig.png}}
+	\caption{Conceptual model of the drivers of soil carbon storage in inland wetlands. Soil organic carbon density depends on relative rates of carbon import through deposition of primary production litter and carbon export via soil microbial and microfaunal respiration during decomposition. Primary production is typically high in wetlands, because water is availabile to stimulate plant growth. Locally-produced litter combines with externally-produced litter that is brought in from the surrounding water catchment areas. The degree to which a wetland is an effective sink for exogenous carbon depends on the size and condition of its catchment and the flow and consistency of its hydrologic connectivity. Inundated conditions can promote anoxic conditions ideal for limited litter decomposition. Plant communities are both indicators of these underlying hydrogeomorphic conditions and also direct drivers of soil carbon themselves, resulting from the volume and quality of the litter they produce.}
+	\label{Fig:conc_model}
+\end{figure}
+
+\subsection{Variability among wetlands}
+
+Although this basic understanding of wetland carbon dynamics gives us a reasonable idea of why wetlands are good at storing carbon in general, it does little to help us predict the quantities of soil carbon and rates of decomposition of individual wetlands. Existing studies contradict one another with respect to how exactly hydrogeomorphology and vegetation interact in affecting carbon storage. Depressional wetlands may store more carbon than river-fed wetlands, but this effect might dependent on climate \citep{bernal2012,bernal2013}. Hydrogeomorphology may not be relevant at all \citep{marin-muniz2014}, nor might inundation alone \citep{villa2015}. 
+
+Some recent large-scale studies have begun to address these discrepancies, but each has still relied upon broad wetland type classifications \citep{nahlik2016,carnell2018}. These classifications generally imprecisely cluster wetlands for purposes of studying carbon storage. The U.S. Army Corps of Engineers uses the Brinson classification system \citep{brinson1993}, which separates wetlands by geomorphology, water supply, and water flow. This multifaceted approach contrasts with the Corrick and Norman scheme common among research agencies in Victoria, Australia, which combines inundation and vegetation categories into classes such as `deep freshwater marsh' and `shallow herbland' \citep{corrick1980}. Categorising carbon storage by these broad and inconsistent criteria might mask finer scale variability in the actual drivers of carbon storage. Well-supported models using globally available spatial data, such as conducted for coastal wetlands \citep{sanderman2018}, is needed for freshwater wetlands.
+
+\section{What is the role of plant litter?}
+
+Studies in diverse systems have identified the correlation between local plant community and carbon stock \citep{orwin2010,manning2015,bernal2012,fornara2008,fornara2012}. There are many potential explanations for the precise mechanism by which plants drive carbon storage. The physical structure of plants can slow flow and trap exogenous material \citep{kramer-walter2016}. Root traits are also important due to effects such as priming, in which labile soil organic matter speeds up decomposition of more recalcitrant carbon \citep{guenet2010}. However, it is well-established that long-term storage of litter-derived carbon in wetlands depends on the rate and extent to which it is decomposed \citep{dedeyn2008,prentice2001}. Decomposition in plant communities is regulated by complex interactions between oxygen availability, water levels, pH, ambient nutrients, and the presence of microbial and macroinvertebrate decomposer communities \citep{rejmankova2006}. However, site level studies and global syntheses point to the outsize importance of litter quality and chemistry on mass loss rates across diverse biomes worldwide \citep{cornwell2008,zhang2008,liao2008,valery2004}. 
+
+\subsection{Functional trait approach}
+
+Litter quality and chemistry can be approximated with a range of functional traits \citep{cornwell2008,freschet2012a,manzoni2012}. Trait-based ecology promises that easy-to-measure and widely available morphological and physiological attributes of species can be used to generalise about the impact that shifts in plant community composition have on ecosystem function \citep{lavorel2002,suding2008,westoby2006,diaz2007,violle2007}. Traits that impact ecosystem function would allow us to look beyond our exact study system and compare across ecosystems and in changing environments \citep{garnier2004}. Community-weighted mean trait values have been used to explain ecosystem-level variations in plant production, decomposition, photosynthesis, respiration, and microbial composition \citep{devries2012,diaz2007,garnier2004,grigulis2013}. Wetlands are the least studied in this field desite how useful functional traits are in generalising about vegetation patterns and their impacts on ecosystems \citep{debello2010}. Nevertheless, interest in applying functional trait approaches to study wetlands is growing \citep{moor2017}. 
+
+\subsubsection*{Covariation in functional traits}
+
+Covariation among traits defines a `plant economic spectrum' of trait variation, for example, nearly three-fourths of the total variation of key leaf traits is described by a single axis in multidimensional trait space \citep{wright2004}. Originally described in leaves, it has since been described in wood \citep{chave2009}, roots \citep{roumet2016}, and across multiple plant organs \citep{freschet2012,reich2014}. This spectrum purports to identify coordinated species-level strategies for nutrient uptake, water use, and also carbon cycling \citep{reich2014}. 
+
+\subsubsection*{Functional traits related to litter quality}
+
+Economic spectrum theory suggests that fast-growing species are evolutionarily adapted for resource acquisition and therefore allocate carbon to photosynthetically active structures with high nitrogen content; these species are typically replaced rapidly and are easily decomposed \citep{reich2014,aerts2000}. Slow-growing species adapt to conserve resources and therefore trade-off more efficient photosynthetic tissue for lower quality tissue with higher concentrations of carbon, including recalcitrant forms that do not easily decompose \citep{reich2014,garnier2004,manning2015}.
+
+Empirical work has concluded that a range of economic spectrum traits as well as carbon compounds correlate with overall decomposition rate of leaf and/or plant litter in general: (i) carbon, nitrogen, or carbon to nitrogen ratio \citep{britson2016,cornelissen2001,cornwell2008,cornwell2014,freschet2012}, (ii) lignin or lignin to nitrogen ratio \citep{britson2016,cornwell2008,freschet2012,freschet2012a,jackson2013,zhang2008,makkonen2012}, (iii) specific leaf area or leaf mass area \citep{cornelissen1999,cornwell2008}, (iv) and litter cellulose \citep{britson2016}, among others. However, economic spectrum traits, despite their correlation with decomposition, do not directly measure litter recalcitrance \citetext{resistance to decay; \citealp{britson2016}}. 
+
+\subsection{Cell wall carbon components}
+
+Intrinsically complex carbons are the most likely to become recalcitrant \citep{lang2009}. Particularly recalcitrant forms include lignin, tannins, and polyphenols, which have a longer residence time in soil. Specific enzymes or rarely-occurring fungi may be required to decompose them \citep{lawrence2013,guenet2010}. Lignin is thermally stable and decomposes slowest in soils because it is composed of heavily-linked benzene-propane monomers \citep{muller-hagedorn2007}. In contrast, cellulose forms long, linear polymers of glucose units that are more easily decomposed than lignin, but more stable than simple sugars such as hemicelluloses, which decompose the fastest \citep{muller-hagedorn2007}. 
+
+The apparent division in plant strategy between investing in short-lived photosynthetic tissue and longer-lived structural tissue might not take into account this diversity of carbon types. Woody, long-lived species tend to expend large amounts of energy in producing chemically complex physical support structures \citep{adler2014,lawrence2013}. Thin-leafed herbaceous species have traits associated with nutrient-rich photosynthetic litter. However, graminoid species, which are particularly diverse and common in wetland ecosystems, are not characterised by either of these extremes (Fig.~\ref{Fig:plants}). They invest in structurally supportive tissue, but it is predominantly cellulose-based. The wide variety of plant forms in wetlands raises questions about the division in investment in photosynthetic and structural tissue and the universality of the plant economic spectrum concept in wetlands \citep{moor2017}.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{chapters/Chapter2_carbon/modified-figs/plants.png}
+  \caption{Sample of representative wetland plant species: (a) \textit{Myriophyllum crispatum}, (b) \textit{Eucalyptus camaldulensis}, (c) \textit{Juncus} species.}
+  \label{Fig:plants}
+\end{figure}
+
+\subsubsection*{Estimating carbon components}
+
+Traits related to the plant economic spectrum can be measured using standardised, widely reproducible methods \citep{perez-harguindeguy2013}. In contrast, estimation of carbon components is typically done with wet chemistry assays, a time-consuming process that also adversely impacts the environment because it requires the use of sulfuric acid and acetic anhydride, among other chemicals. Thermogravimetric analysis (TGA), widely used by biofuels researchers, can also be used to estimate biomass carbon \citep{hu2016,cheng2015,perejon2011}. Litter mass loss during pyrolysis can be regarded as the sum of the degradation of the main plant tissue carbon components: hemicelluloses, cellulose, and lignin \citep{hu2016,cheng2015,perejon2011,orfao2001,muller-hagedorn2007}. The rate of mass loss curve must then be mathematically separated into individual peaks corresponding to the weight of each primary component. This method has been validated by studies comparing estimates to experimental measurements \citep{yang2006} and has been tested in multi-species comparisons of marine and coastal macrophyte species \citep{trevathan-tackett2015} as well as in eucaplyt species \citep{orfao2001}. 
+
+In practice, this peak separation is typically conducted with commercial software \citetext{for example OriginPro as in \citealp{chen2017}, PeakFit as in \citealp{perejon2011}, Fityk as in \citealp{perejon2011}, or Datafit as in \citealp{cheng2015}}. These softwares are not accessible to everyone and can obscure computational and statistical choices that impact estimation results. Given the clear connection between litter carbon complexity and rate of decomposition \citep{britson2016,lang2009}, it is important to standardise the thermogravimetric analysis technique for carbon component estimation with computationally reproducible methods. 
+
+\section{How does plant litter decompose?}
+
+Appropriate models are required to quantify decomposition rates and test the relative predictive abilities of traits on rates of decomposition \citep{dedeyn2008}. During decomposition, mass is lost quickly initially and then slows \citep{olson1963}, and is most commonly approximated using the negative exponential model. This model has a constant rate of decay over time. Despite its widespread use, it has been criticised for its relevance in modelling the decomposition of heterogeneous litter \citep{wieder1982,cheshire1988,prescott2010,adair2010}. Litter consists of a variety of structures (roots, stems, leaves), which contain varying amounts of carbon components that decompose at different rates at different phases of decay \citep{freschet2012}. A range of more flexible, multiple parameter decomposition models exist that are therefore more appropriate \citep{bruun2004,feng2009,manzoni2012}. 
+
+\section{Statement of problem}
+
+We have an imperfect understanding of the carbon dynamics of different vegetation communities whose varied litter decomposes to produce the organic carbon that is stored in the soil. Although the productivity of vegetation communities alone may be not be sufficient to predict soil carbon storage in wetlands, the relative abundance of complex carbons deposited by species may be an important indirect driver of carbon storage. The intrinsic recalcitrance of the carbon components of a plant's structural tissue affects how much carbon from that tissue will be stored long-term in the soil. The diversity of the carbon components in structural tissue raises difficult questions about how to develop standardised and reproducible ways to measure them, how they relate to proposed unified plant strategies, and which kind of decomposition models we should use to appropriately account for them. 
+
+\section{Thesis aims}
+
+My research aims to improve our understanding of plant contribution to soil carbon, from the scale of a leaf to the wider landscape, and aid in clarifying processes of plant decay in wetlands and carbon storage in general. Specifically, I aim to: (1) examine the relative contribution of productivity of the local plant community to carbon stock in wetlands compared to other drivers, and therefore improve our predictive ability to the global scale; (2) explore ways to measure these traits and quantify covariation between them; and (3) empirically test the contribution of these traits to litter decomposition. Throughout this work I use Bayesian, hierarchical modelling approaches that improve our ability to distinguish between sources of variation. I outline the aims of each chapter in the next section and present in Fig.~\ref{Fig:questions} the broader aim and questions associated with each chapter. 
+
+\begin{figure}[!ht]
+	\centering
+	\scalebox{0.8}
+	{\includegraphics[width=\textwidth]{chapters/Chapter1_Intro_questions.jpeg}}
+	\caption{Questions addressed by each chapter contributing to the three overall aims.}
+	\label{Fig:questions}
+\end{figure}
+
+\section{Thesis outline}
+ 
+\subsubsection*{Chapter 2: Drivers of soil carbon storage in freshwater wetlands of south eastern Australia}
+
+This chapter quantifies the impact of landscape-scale environmental drivers on organic carbon storage in soil. I test prediction of soil carbon from 100 wetlands located in the state of Victoria, Australia with a model using spatially-explicit environmental data. This study is the first attempt to model unbiased regional sampling of freshwater wetlands with continuous environmental data.
+
+\subsubsection*{Chapter 3: Decoupling plant economics traits and biomass carbon composition in wetland litter}
+
+This chapter explores innovative analytic techniques for estimating carbon complexity in litter (thermogravimetric analysis) and seeks to understand the relationship of carbon complexity to traditional functional traits and to litter recalcitrance in general. I measure traits in 29 wetland plant species and address these aims with phylogenetic analysis and principal component analysis. 
+
+\subsubsection*{Chapter 4: mixchar: An R package for the deconvolution of thermal decay curves}
+
+Thermogravimetric analysis of litter biomass requires application of a statistical mixture model to estimate the relative contribution of different carbon components. This chapter introduces an open-source implementation of this mixture model in the statistical programming language, R. 
+
+\subsubsection*{Chapter 5: Understanding variation in litter decomposition in a multispecies mesocosm}
+
+This chapter seeks to understand how well functional traits and carbon components estimated in the previous chapters predict rates of litter decomposition. I conduct a mesocosm decomposition experiment of the same 29 wetland plant species introduced in Chapter 3 and evaluate a series of increasingly complex non-linear models of decomposition with a hierarchical, Bayesian implementation.
+
+\subsubsection*{Chapter 6: General Discussion}
+
+This chapter synthesizes my findings and discusses their significance and implications for understanding how plants contribute to wetland soil carbon stock. I also place the statistical approaches used in this thesis into a broader context and provide details about future work. 
+
+\subsubsection*{Appendices}
+
+Appendices contain supplementary material associated with each chapter (Appendices~\ref{apx:ch2}\textendash~\ref{apx:ch5}) as well as two publications that I co-authored and that relate to this thesis (Appendix~\ref{apx:pubs}). The first publication relates to work described in Chapter 2, and the second is a chapter of a book about wetland plant vegetation. 

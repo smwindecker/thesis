@@ -1,0 +1,18 @@
+\chapter{Published works}\label{apx:pubs}
+\newpage
+
+\section{Carbon stocks, sequestration, and emission of wetlands in south eastern Australia}
+
+The following publication is reproduced in its entirety: 
+
+Carnell PE, \textbf{Windecker SM}, Brenker M, Baldock J, Maque P, Brunt K, \& Macreadie PI. 2018. Carbon stocks, sequestration, and emission of wetlands in south eastern Australia. Global Change Biol. 2018;00:1–12.
+
+\includepdf[pages={1-12}]{chapters/Carnell_et_al-2018-Global_Change_Biology.pdf} 
+
+\section{Australian Vegetation}
+
+The following publication is reproduced in its entirety: 
+
+Catford JA, Roberts J, Capon SJ, Froend RH, \textbf{Windecker SM}, \& Douglas MM. 2017. Wetland vegetation of inland Australia. \textit{Australian Vegetation} (ed. D.A. Keith), 3rd edition. Cambridge University Press, p. 490-515.
+
+\includepdf[pages={1-13}]{chapters/Australian_Vegetation.pdf} 
