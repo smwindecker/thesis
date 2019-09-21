@@ -162,7 +162,7 @@ targets:
     check: exists
 
   model_df:
-    command: create_model_df(spatial_stock)   
+    command: create_model_df(spatial_stock, I('chapters/Chapter2_carbon/'))   
     cleanup_level: purge
     check: exists
 
@@ -354,7 +354,7 @@ targets:
       bg: transparent
 
   chapters/Chapter2_carbon/figs/site_map.png:
-    command: sites_map(spatial_sites, file_location = I('chapters/Chapter2_carbon/shapefiles/raw'))
+    command: sites_map(spatial_sites, file_location = I('chapters/Chapter2_carbon/shapefiles/raw'), thesis = TRUE)
     plot: 
       width: 800
       height: 800
